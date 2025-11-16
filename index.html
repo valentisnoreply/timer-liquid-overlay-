@@ -48,6 +48,7 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: waveAnimation 4s ease-in-out infinite;
+            
         }
 
         @keyframes waveAnimation {
@@ -448,105 +449,119 @@
             updateClipPath(percentage);
         }
 
-        function updateClipPath(percentage) {
-            const liquidElement = document.getElementById('timer-liquid');
-            const topEdge = 100 - percentage;
-            
-            const keyframe1 = `
-                0% {
-                    clip-path: polygon(
-                        0% ${topEdge}%, 
-                        10% ${topEdge - 2}%, 
-                        20% ${topEdge - 3}%,
-                        30% ${topEdge - 2}%,
-                        40% ${topEdge + 1}%, 
-                        50% ${topEdge + 2}%, 
-                        60% ${topEdge + 1}%,
-                        70% ${topEdge - 1}%,
-                        80% ${topEdge - 2}%,
-                        90% ${topEdge - 1}%,
-                        100% ${topEdge}%,
-                        100% 100%, 0% 100%
-                    );
-                }
-                25% {
-                    clip-path: polygon(
-                        0% ${topEdge - 1}%, 
-                        10% ${topEdge + 1}%, 
-                        20% ${topEdge + 2}%,
-                        30% ${topEdge + 3}%,
-                        40% ${topEdge + 2}%, 
-                        50% ${topEdge}%, 
-                        60% ${topEdge - 2}%,
-                        70% ${topEdge - 3}%,
-                        80% ${topEdge - 2}%,
-                        90% ${topEdge}%,
-                        100% ${topEdge + 1}%,
-                        100% 100%, 0% 100%
-                    );
-                }
-                50% {
-                    clip-path: polygon(
-                        0% ${topEdge + 2}%, 
-                        10% ${topEdge + 3}%, 
-                        20% ${topEdge + 2}%,
-                        30% ${topEdge}%,
-                        40% ${topEdge - 2}%, 
-                        50% ${topEdge - 3}%, 
-                        60% ${topEdge - 2}%,
-                        70% ${topEdge + 1}%,
-                        80% ${topEdge + 2}%,
-                        90% ${topEdge + 3}%,
-                        100% ${topEdge + 2}%,
-                        100% 100%, 0% 100%
-                    );
-                }
-                75% {
-                    clip-path: polygon(
-                        0% ${topEdge + 1}%, 
-                        10% ${topEdge - 1}%, 
-                        20% ${topEdge - 2}%,
-                        30% ${topEdge - 2}%,
-                        40% ${topEdge - 1}%, 
-                        50% ${topEdge + 1}%, 
-                        60% ${topEdge + 3}%,
-                        70% ${topEdge + 2}%,
-                        80% ${topEdge}%,
-                        90% ${topEdge - 2}%,
-                        100% ${topEdge - 1}%,
-                        100% 100%, 0% 100%
-                    );
-                }
-                100% {
-                    clip-path: polygon(
-                        0% ${topEdge}%, 
-                        10% ${topEdge - 2}%, 
-                        20% ${topEdge - 3}%,
-                        30% ${topEdge - 2}%,
-                        40% ${topEdge + 1}%, 
-                        50% ${topEdge + 2}%, 
-                        60% ${topEdge + 1}%,
-                        70% ${topEdge - 1}%,
-                        80% ${topEdge - 2}%,
-                        90% ${topEdge - 1}%,
-                        100% ${topEdge}%,
-                        100% 100%, 0% 100%
-                    );
-                }
-            `;
-            
-            const styleSheet = document.styleSheets[0];
-            const rules = styleSheet.cssRules || styleSheet.rules;
-            
-            for (let i = rules.length - 1; i >= 0; i--) {
-                if (rules[i].name === 'waveAnimation') {
-                    styleSheet.deleteRule(i);
-                    break;
-                }
-            }
-            
-            styleSheet.insertRule(`@keyframes waveAnimation { ${keyframe1} }`, styleSheet.cssRules.length);
+function updateClipPath(percentage) {
+    const liquidElement = document.getElementById('timer-liquid');
+
+    // 🔧 Ajuste de faixa vertical do líquido:
+    // minLevel = nível mínimo (quase vazio)
+    // maxLevel = nível máximo (quase cheio)
+    const minLevel = 15;   // 5% → não vai até o fundo absoluto
+    const maxLevel = 75;  // 95% → não encosta no topo absoluto
+
+    // percentage vai de 0 a 100 → normalizamos para 0..1
+    const normalized = percentage / 100;
+
+    // mapeia para a faixa [minLevel, maxLevel]
+    const adjustedPercentage = minLevel + normalized * (maxLevel - minLevel);
+
+    // onde a ondinha vai ficar (quanto maior adjustedPercentage, mais cheio)
+    const topEdge = 100 - adjustedPercentage;
+
+    const keyframe1 = `
+        0% {
+            clip-path: polygon(
+                0% ${topEdge}%,
+                10% ${topEdge - 2}%,
+                20% ${topEdge - 3}%,
+                30% ${topEdge - 2}%,
+                40% ${topEdge + 1}%,
+                50% ${topEdge + 2}%,
+                60% ${topEdge + 1}%,
+                70% ${topEdge - 1}%,
+                80% ${topEdge - 2}%,
+                90% ${topEdge - 1}%,
+                100% ${topEdge}%,
+                100% 100%, 0% 100%
+            );
         }
+        25% {
+            clip-path: polygon(
+                0% ${topEdge - 1}%,
+                10% ${topEdge + 1}%,
+                20% ${topEdge + 2}%,
+                30% ${topEdge + 3}%,
+                40% ${topEdge + 2}%,
+                50% ${topEdge}%,
+                60% ${topEdge - 2}%,
+                70% ${topEdge - 3}%,
+                80% ${topEdge - 2}%,
+                90% ${topEdge}%,
+                100% ${topEdge + 1}%,
+                100% 100%, 0% 100%
+            );
+        }
+        50% {
+            clip-path: polygon(
+                0% ${topEdge + 2}%,
+                10% ${topEdge + 3}%,
+                20% ${topEdge + 2}%,
+                30% ${topEdge}%,
+                40% ${topEdge - 2}%,
+                50% ${topEdge - 3}%,
+                60% ${topEdge - 2}%,
+                70% ${topEdge + 1}%,
+                80% ${topEdge + 2}%,
+                90% ${topEdge + 3}%,
+                100% ${topEdge + 2}%,
+                100% 100%, 0% 100%
+            );
+        }
+        75% {
+            clip-path: polygon(
+                0% ${topEdge + 1}%,
+                10% ${topEdge - 1}%,
+                20% ${topEdge - 2}%,
+                30% ${topEdge - 2}%,
+                40% ${topEdge - 1}%,
+                50% ${topEdge + 1}%,
+                60% ${topEdge + 3}%,
+                70% ${topEdge + 2}%,
+                80% ${topEdge}%,
+                90% ${topEdge - 2}%,
+                100% ${topEdge - 1}%,
+                100% 100%, 0% 100%
+            );
+        }
+        100% {
+            clip-path: polygon(
+                0% ${topEdge}%,
+                10% ${topEdge - 2}%,
+                20% ${topEdge - 3}%,
+                30% ${topEdge - 2}%,
+                40% ${topEdge + 1}%,
+                50% ${topEdge + 2}%,
+                60% ${topEdge + 1}%,
+                70% ${topEdge - 1}%,
+                80% ${topEdge - 2}%,
+                90% ${topEdge - 1}%,
+                100% ${topEdge}%,
+                100% 100%, 0% 100%
+            );
+        }
+    `;
+
+    const styleSheet = document.styleSheets[0];
+    const rules = styleSheet.cssRules || styleSheet.rules;
+
+    for (let i = rules.length - 1; i >= 0; i--) {
+        if (rules[i].name === 'waveAnimation') {
+            styleSheet.deleteRule(i);
+            break;
+        }
+    }
+
+    styleSheet.insertRule(`@keyframes waveAnimation { ${keyframe1} }`, styleSheet.cssRules.length);
+}
 
         function startTimer() {
             if (isRunning) return;
