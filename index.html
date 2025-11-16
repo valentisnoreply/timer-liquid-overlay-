@@ -218,13 +218,7 @@
             border: 1px solid #333;
         }
 
-        .color-preview {
-            width: 100%;
-            height: 30px;
-            border-radius: 5px;
-            border: 2px solid #ffffff;
-            margin-top: 10px;
-        }
+        
 
         label {
             color: #ffffff;
@@ -333,6 +327,21 @@
         .advanced-color .advanced-content {
             margin-top: 6px;
         }
+
+        .color-block {
+            margin-top: 4px;
+        }
+
+        .color-block summary {
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .color-block[open] summary {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -386,120 +395,138 @@
             <div class="divider"></div>
 
             <div class="config-item">
-                <label>Cor do Contorno:</label>
-                <div class="color-section">
-                    <input type="color" id="outlineColor" value="#ffffff" onchange="updateFromPicker('outline')">
-                    <div class="rgb-inputs">
-                        <input type="number" id="outline-r" min="0" max="255" value="255" oninput="updateFromRGB('outline')">
-                        <input type="number" id="outline-g" min="0" max="255" value="255" oninput="updateFromRGB('outline')">
-                        <input type="number" id="outline-b" min="0" max="255" value="255" oninput="updateFromRGB('outline')">
+                <details class="color-block">
+                    <summary>Cor do Contorno</summary>
+                    <div class="color-section">
+                        <input type="color" id="outlineColor" value="#ffffff" onchange="updateFromPicker('outline')">
+                        <details class="advanced-color">
+                            <summary>Avançado</summary>
+                            <div class="advanced-content">
+                                <div class="rgb-inputs">
+                                    <input type="number" id="outline-r" min="0" max="255" value="255" oninput="updateFromRGB('outline')">
+                                    <input type="number" id="outline-g" min="0" max="255" value="255" oninput="updateFromRGB('outline')">
+                                    <input type="number" id="outline-b" min="0" max="255" value="255" oninput="updateFromRGB('outline')">
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label"><span>Saturação</span><span id="outline-sat-val">100%</span></div>
+                                    <input type="range" id="outline-sat" min="0" max="100" value="100" oninput="updateFromSliders('outline')">
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label"><span>Brilho</span><span id="outline-bri-val">100%</span></div>
+                                    <input type="range" id="outline-bri" min="0" max="100" value="100" oninput="updateFromSliders('outline')">
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label"><span>Opacidade</span><span id="outline-opa-val">100%</span></div>
+                                    <input type="range" id="outline-opa" min="0" max="100" value="100" oninput="updateColors()">
+                                </div>
+                            </div>
+                        </details>
                     </div>
-                    <div class="slider-container">
-                        <div class="slider-label"><span>Saturação</span><span id="outline-sat-val">100%</span></div>
-                        <input type="range" id="outline-sat" min="0" max="100" value="100" oninput="updateFromSliders('outline')">
-                    </div>
-                    <div class="slider-container">
-                        <div class="slider-label"><span>Brilho</span><span id="outline-bri-val">100%</span></div>
-                        <input type="range" id="outline-bri" min="0" max="100" value="100" oninput="updateFromSliders('outline')">
-                    </div>
-                    <div class="slider-container">
-                        <div class="slider-label"><span>Opacidade</span><span id="outline-opa-val">100%</span></div>
-                        <input type="range" id="outline-opa" min="0" max="100" value="100" oninput="updateColors()">
-                    </div>
-                    <div class="color-preview" id="outline-preview"></div>
-                </div>
+                </details>
             </div>
 
             <div class="config-item">
-                <label>Cor do Líquido:</label>
-                <div class="color-section">
-                    <input type="color" id="liquidColor" value="#00d4ff" onchange="updateFromPicker('liquid')">
-                    <label style="margin-top: 8px; font-size: 12px; color: #ffffff; display:block;">Cor do degradê (base):</label>
-                    <input type="color" id="liquidGradientColor" value="#ff46f6" onchange="updateColors()">
+                <details class="color-block">
+                    <summary>Cor do Líquido</summary>
+                    <div class="color-section">
+                        <input type="color" id="liquidColor" value="#00d4ff" onchange="updateFromPicker('liquid')">
+                        <label style="margin-top: 8px; font-size: 12px; color: #ffffff; display:block;">Cor do degradê (base):</label>
+                        <input type="color" id="liquidGradientColor" value="#ff46f6" onchange="updateColors()">
 
-                    <div class="slider-container" style="margin-top: 8px;">
-                        <div class="slider-label">
-                            <span>Equilíbrio do degradê</span>
-                            <span id="liquid-grad-balance-val">50%</span>
+                        <div class="slider-container" style="margin-top: 8px;">
+                            <div class="slider-label">
+                                <span>Equilíbrio do degradê</span>
+                                <span id="liquid-grad-balance-val">50%</span>
+                            </div>
+                            <input type="range" id="liquid-grad-balance" min="0" max="100" value="50" oninput="updateColors()">
                         </div>
-                        <input type="range" id="liquid-grad-balance" min="0" max="100" value="50" oninput="updateColors()">
+
+                        <details class="advanced-color">
+                            <summary>Avançado</summary>
+                            <div class="advanced-content">
+                                <div class="rgb-inputs">
+                                    <input type="number" id="liquid-r" min="0" max="255" value="0" oninput="updateFromRGB('liquid')">
+                                    <input type="number" id="liquid-g" min="0" max="255" value="212" oninput="updateFromRGB('liquid')">
+                                    <input type="number" id="liquid-b" min="0" max="255" value="255" oninput="updateFromRGB('liquid')">
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label"><span>Saturação</span><span id="liquid-sat-val">100%</span></div>
+                                    <input type="range" id="liquid-sat" min="0" max="100" value="100" oninput="updateFromSliders('liquid')">
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label"><span>Brilho</span><span id="liquid-bri-val">100%</span></div>
+                                    <input type="range" id="liquid-bri" min="0" max="100" value="100" oninput="updateFromSliders('liquid')">
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label"><span>Opacidade</span><span id="liquid-opa-val">100%</span></div>
+                                    <input type="range" id="liquid-opa" min="0" max="100" value="100" oninput="updateColors()">
+                                </div>
+                            </div>
+                        </details>
                     </div>
-
-                    <details class="advanced-color">
-                        <summary>Avançado</summary>
-                        <div class="advanced-content">
-                            <div class="rgb-inputs">
-                                <input type="number" id="liquid-r" min="0" max="255" value="0" oninput="updateFromRGB('liquid')">
-                                <input type="number" id="liquid-g" min="0" max="255" value="212" oninput="updateFromRGB('liquid')">
-                                <input type="number" id="liquid-b" min="0" max="255" value="255" oninput="updateFromRGB('liquid')">
-                            </div>
-                            <div class="slider-container">
-                                <div class="slider-label"><span>Saturação</span><span id="liquid-sat-val">100%</span></div>
-                                <input type="range" id="liquid-sat" min="0" max="100" value="100" oninput="updateFromSliders('liquid')">
-                            </div>
-                            <div class="slider-container">
-                                <div class="slider-label"><span>Brilho</span><span id="liquid-bri-val">100%</span></div>
-                                <input type="range" id="liquid-bri" min="0" max="100" value="100" oninput="updateFromSliders('liquid')">
-                            </div>
-                            <div class="slider-container">
-                                <div class="slider-label"><span>Opacidade</span><span id="liquid-opa-val">100%</span></div>
-                                <input type="range" id="liquid-opa" min="0" max="100" value="100" oninput="updateColors()">
-                            </div>
-                        </div>
-                    </details>
-
-                    <div class="color-preview" id="liquid-preview"></div>
-                </div>
+                </details>
             </div>
 
             <div class="config-item">
-                <label>Cor de Preenchimento:</label>
-                <div class="color-section">
-                    <input type="color" id="fillColor" value="#333333" onchange="updateFromPicker('fill')">
-                    <div class="rgb-inputs">
-                        <input type="number" id="fill-r" min="0" max="255" value="51" oninput="updateFromRGB('fill')">
-                        <input type="number" id="fill-g" min="0" max="255" value="51" oninput="updateFromRGB('fill')">
-                        <input type="number" id="fill-b" min="0" max="255" value="51" oninput="updateFromRGB('fill')">
+                <details class="color-block">
+                    <summary>Cor de Preenchimento</summary>
+                    <div class="color-section">
+                        <input type="color" id="fillColor" value="#333333" onchange="updateFromPicker('fill')">
+                        <details class="advanced-color">
+                            <summary>Avançado</summary>
+                            <div class="advanced-content">
+                                <div class="rgb-inputs">
+                                    <input type="number" id="fill-r" min="0" max="255" value="51" oninput="updateFromRGB('fill')">
+                                    <input type="number" id="fill-g" min="0" max="255" value="51" oninput="updateFromRGB('fill')">
+                                    <input type="number" id="fill-b" min="0" max="255" value="51" oninput="updateFromRGB('fill')">
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label"><span>Saturação</span><span id="fill-sat-val">100%</span></div>
+                                    <input type="range" id="fill-sat" min="0" max="100" value="100" oninput="updateFromSliders('fill')">
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label"><span>Brilho</span><span id="fill-bri-val">100%</span></div>
+                                    <input type="range" id="fill-bri" min="0" max="100" value="100" oninput="updateFromSliders('fill')">
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label"><span>Opacidade</span><span id="fill-opa-val">100%</span></div>
+                                    <input type="range" id="fill-opa" min="0" max="100" value="100" oninput="updateColors()">
+                                </div>
+                            </div>
+                        </details>
                     </div>
-                    <div class="slider-container">
-                        <div class="slider-label"><span>Saturação</span><span id="fill-sat-val">100%</span></div>
-                        <input type="range" id="fill-sat" min="0" max="100" value="100" oninput="updateFromSliders('fill')">
-                    </div>
-                    <div class="slider-container">
-                        <div class="slider-label"><span>Brilho</span><span id="fill-bri-val">100%</span></div>
-                        <input type="range" id="fill-bri" min="0" max="100" value="100" oninput="updateFromSliders('fill')">
-                    </div>
-                    <div class="slider-container">
-                        <div class="slider-label"><span>Opacidade</span><span id="fill-opa-val">100%</span></div>
-                        <input type="range" id="fill-opa" min="0" max="100" value="100" oninput="updateColors()">
-                    </div>
-                    <div class="color-preview" id="fill-preview"></div>
-                </div>
+                </details>
             </div>
 
             <div class="config-item">
-                <label>Cor do Fundo:</label>
-                <div class="color-section">
-                    <input type="color" id="bgColor" value="#000000" onchange="updateFromPicker('bg')">
-                    <div class="rgb-inputs">
-                        <input type="number" id="bg-r" min="0" max="255" value="0" oninput="updateFromRGB('bg')">
-                        <input type="number" id="bg-g" min="0" max="255" value="0" oninput="updateFromRGB('bg')">
-                        <input type="number" id="bg-b" min="0" max="255" value="0" oninput="updateFromRGB('bg')">
+                <details class="color-block">
+                    <summary>Cor do Fundo</summary>
+                    <div class="color-section">
+                        <input type="color" id="bgColor" value="#000000" onchange="updateFromPicker('bg')">
+                        <details class="advanced-color">
+                            <summary>Avançado</summary>
+                            <div class="advanced-content">
+                                <div class="rgb-inputs">
+                                    <input type="number" id="bg-r" min="0" max="255" value="0" oninput="updateFromRGB('bg')">
+                                    <input type="number" id="bg-g" min="0" max="255" value="0" oninput="updateFromRGB('bg')">
+                                    <input type="number" id="bg-b" min="0" max="255" value="0" oninput="updateFromRGB('bg')">
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label"><span>Saturação</span><span id="bg-sat-val">100%</span></div>
+                                    <input type="range" id="bg-sat" min="0" max="100" value="100" oninput="updateFromSliders('bg')">
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label"><span>Brilho</span><span id="bg-bri-val">100%</span></div>
+                                    <input type="range" id="bg-bri" min="0" max="100" value="100" oninput="updateFromSliders('bg')">
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label"><span>Opacidade</span><span id="bg-opa-val">100%</span></div>
+                                    <input type="range" id="bg-opa" min="0" max="100" value="100" oninput="updateColors()">
+                                </div>
+                            </div>
+                        </details>
                     </div>
-                    <div class="slider-container">
-                        <div class="slider-label"><span>Saturação</span><span id="bg-sat-val">100%</span></div>
-                        <input type="range" id="bg-sat" min="0" max="100" value="100" oninput="updateFromSliders('bg')">
-                    </div>
-                    <div class="slider-container">
-                        <div class="slider-label"><span>Brilho</span><span id="bg-bri-val">100%</span></div>
-                        <input type="range" id="bg-bri" min="0" max="100" value="100" oninput="updateFromSliders('bg')">
-                    </div>
-                    <div class="slider-container">
-                        <div class="slider-label"><span>Opacidade</span><span id="bg-opa-val">100%</span></div>
-                        <input type="range" id="bg-opa" min="0" max="100" value="100" oninput="updateColors()">
-                    </div>
-                    <div class="color-preview" id="bg-preview"></div>
-                </div>
+                </details>
             </div>
 
             <div class="divider"></div>
@@ -615,7 +642,9 @@
 
             if (units.includes('milliseconds')) {
                 const base = text || '';
-                const msStr = String(Math.floor(millis)).padStart(3, '0');
+                // Exibe centésimos de segundo (00 a 99) em vez de 000–999 ms
+                const centis = Math.floor(millis / 10); // 1000 ms → 100 passos de 10 ms
+                const msStr = String(centis).padStart(2, '0');
                 text = base ? base + '.' + msStr : msStr;
             }
 
@@ -859,6 +888,7 @@
             
             const adjusted = applySaturationBrightness(r, g, b, sat, bri);
             const preview = document.getElementById(`${type}-preview`);
+            if (!preview) return;
             preview.style.background = `rgba(${adjusted.r}, ${adjusted.g}, ${adjusted.b}, ${opa})`;
         }
 
